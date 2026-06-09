@@ -1,56 +1,134 @@
 <template>
   <ion-page>
+    <!-- Encabezado de la aplicación -->
     <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-title>Blank</ion-title>
+      <ion-toolbar color="primary">
+        <ion-title>Registro de Alumnos</ion-title>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Blank</ion-title>
-        </ion-toolbar>
-      </ion-header>
+    <!-- Contenido principal con el formulario -->
+    <ion-content :fullscreen="true" class="ion-padding">
+      
+      <div class="form-container">
+        <h2 class="ion-text-center">Datos del Alumno</h2>
 
-      <div id="container">
-        <strong>Ready to create an app?</strong>
-        <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+        <!-- Campo: Nombre -->
+        <ion-item fill="outline" mode="md" class="ion-margin-bottom">
+          <ion-input 
+            label="Nombre Completo" 
+            label-placement="floating" 
+            v-model="alumno.nombre"
+            type="text">
+          </ion-input>
+        </ion-item>
+
+        <!-- Campo: Matrícula -->
+        <ion-item fill="outline" mode="md" class="ion-margin-bottom">
+          <ion-input 
+            label="Matrícula" 
+            label-placement="floating" 
+            v-model="alumno.matricula"
+            type="text">
+          </ion-input>
+        </ion-item>
+
+        <!-- Campo: Correo -->
+        <ion-item fill="outline" mode="md" class="ion-margin-bottom">
+          <ion-input 
+            label="Correo Electrónico" 
+            label-placement="floating" 
+            v-model="alumno.correo"
+            type="email">
+          </ion-input>
+        </ion-item>
+
+        <!-- Campo: Carrera -->
+        <ion-item fill="outline" mode="md" class="ion-margin-bottom">
+          <ion-input 
+            label="Carrera" 
+            label-placement="floating" 
+            v-model="alumno.carrera"
+            type="text">
+          </ion-input>
+        </ion-item>
+
+        <!-- Botones de Acción -->
+        <div class="button-container ion-margin-top">
+          <ion-button expand="block" color="success" @click="guardarAlumno">
+            Guardar Alumno
+          </ion-button>
+          <ion-button expand="block" color="medium" fill="clear" @click="limpiarFormulario">
+            Limpiar Campos
+          </ion-button>
+        </div>
       </div>
+
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { ref } from 'vue';
+import { 
+  IonContent, 
+  IonHeader, 
+  IonPage, 
+  IonTitle, 
+  IonToolbar, 
+  IonItem, 
+  IonInput, 
+  IonButton 
+} from '@ionic/vue';
+
+// Objeto reactivo para almacenar los campos del formulario
+const alumno = ref({
+  nombre: '',
+  matricula: '',
+  correo: '',
+  carrera: ''
+});
+
+// Función para procesar y guardar la información
+const guardarAlumno = () => {
+  if (!alumno.value.nombre || !alumno.value.matricula) {
+    alert('Por favor, llena al menos los campos de Nombre y Matrícula.');
+    return;
+  }
+  
+  console.log('Datos del alumno guardados con éxito:', alumno.value);
+  alert(`Alumno ${alumno.value.nombre} registrado correctamente en la consola.`);
+  limpiarFormulario();
+};
+
+// Función para reiniciar los valores del formulario
+const limpiarFormulario = () => {
+  alumno.value = {
+    nombre: '',
+    matricula: '',
+    correo: '',
+    carrera: ''
+  };
+};
 </script>
 
 <style scoped>
-#container {
-  text-align: center;
-  
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.form-container {
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 15px;
+  background: transparent;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+h2 {
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: var(--ion-color-dark);
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  
-  color: #8c8c8c;
-  
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+.button-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 </style>
